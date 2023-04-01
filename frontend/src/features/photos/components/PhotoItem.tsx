@@ -1,20 +1,23 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
 import {apiURL} from '../../../constants';
 import {openModal, selectDeletePhotoLoading} from '../photosSlice';
 import {useAppDispatch, useAppSelector} from '../../../app/hook';
 import {selectUser} from '../../users/usersSlice';
 import {LoadingButton} from '@mui/lab';
-import {deletePhoto} from '../photosThunk';
+import {deletePhoto, fetchPhotos, fetchPhotosByUserId} from '../photosThunk';
 import {PhotoApi} from '../../../types';
 
 interface Props {
     item: PhotoApi;
+    showName?: boolean;
+    idParams?: string;
 }
 
-const PhotoItem: React.FC<Props> = ({item}) => {
+const PhotoItem: React.FC<Props> = ({item, showName, idParams}) => {
     const dispatch = useAppDispatch();
+    const location = useLocation();
     const user = useAppSelector(selectUser);
     const deleteLoading = useAppSelector(selectDeletePhotoLoading);
 
@@ -23,7 +26,17 @@ const PhotoItem: React.FC<Props> = ({item}) => {
     };
 
     const onDeletePhoto = async (id: string) => {
-        await dispatch(deletePhoto(id));
+        try {
+            await dispatch(deletePhoto(id));
+        } finally {
+            if (location.pathname === '/' || location.pathname === '/photos') {
+                await dispatch(fetchPhotos());
+            } else {
+                if (idParams) {
+                    await dispatch(fetchPhotosByUserId(idParams));
+                }
+            }
+        }
     };
 
     return (
@@ -44,16 +57,18 @@ const PhotoItem: React.FC<Props> = ({item}) => {
             </CardActionArea>
             <Grid container alignItems='center' justifyContent='space-between'>
                 <Grid item>
-                    <Grid container textTransform='capitalize'>
-                        <Grid item>
-                            <Typography ml={2} mr={1}>
-                                By:
-                            </Typography>
+                    {showName &&
+                        <Grid container textTransform='capitalize'>
+                            <Grid item>
+                                <Typography ml={2} mr={1}>
+                                    By:
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Link to={'/userGallery/' + item.user._id}>{item.user.displayName}</Link>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <Link to={'/userPhotos/' + item.user._id}>{item.user.displayName}</Link>
-                        </Grid>
-                    </Grid>
+                    }
                 </Grid>
                 <Grid item>
                     {user && user.role === 'admin' &&

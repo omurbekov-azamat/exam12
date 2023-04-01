@@ -16,12 +16,23 @@ export const fetchPhotos = createAsyncThunk<PhotoApi[]>(
 
 export const deletePhoto = createAsyncThunk<void, string>(
     'photos/deletePhoto',
-    async (id, {dispatch}) => {
+    async (id) => {
         try {
             await axiosApi.delete('/photos/' + id);
-            await dispatch(fetchPhotos());
         } catch (e) {
             throw e;
         }
     }
 );
+
+export const fetchPhotosByUserId = createAsyncThunk<PhotoApi[], string>(
+    'photos/fetchPhotosByUserId',
+    async (id) => {
+        try {
+            const response = await axiosApi.get<PhotoApi[]>('/photos?user=' + id);
+            return response.data;
+        } catch (e) {
+            throw e;
+        }
+    }
+)

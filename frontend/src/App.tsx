@@ -4,6 +4,7 @@ import Home from './containers/Home';
 import Register from './features/users/Register';
 import Login from './features/users/Login';
 import Photos from './containers/Photos';
+import UserGallery from './containers/UserGallery';
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
             <Route path='/' element={<Home/>}>
                 <Route path='/' element={<Photos/>}/>
                 <Route path='/photos' element={<Photos/>}/>
+                <Route path='/userGallery/:id' element={<UserGallery/>}/>
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/login' element={<Login/>}/>
             </Route>

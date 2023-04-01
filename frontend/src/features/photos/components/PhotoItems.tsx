@@ -6,9 +6,11 @@ import {PhotoApi} from '../../../types';
 
 interface Props {
     items: PhotoApi[];
+    showName?: boolean;
+    idParams?: string;
 }
 
-const PhotoItems: React.FC<Props> = ({items}) => {
+const PhotoItems: React.FC<Props> = ({items, showName, idParams}) => {
 
     if (items.length === 0) {
         return (
@@ -20,9 +22,9 @@ const PhotoItems: React.FC<Props> = ({items}) => {
 
     return (
         <>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} mt={2}>
                 {items.map(photo => (
-                    <PhotoItem key={photo._id} item={photo}/>
+                    <PhotoItem key={photo._id} item={photo} showName={showName} idParams={idParams}/>
                 ))}
             </Grid>
             <ModalCover/>

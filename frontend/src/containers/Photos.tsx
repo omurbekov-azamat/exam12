@@ -17,7 +17,7 @@ const Photos = () => {
     return (
         <>
             {loading && <Spinner/>}
-            <PhotoItems items={photos}/>
+            <PhotoItems items={photos} showName={true}/>
         </>
     );
 };

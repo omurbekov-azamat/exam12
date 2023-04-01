@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
-import {deletePhoto, fetchPhotos} from './photosThunk';
+import {deletePhoto, fetchPhotos, fetchPhotosByUserId} from './photosThunk';
 import {Fullscreen, PhotoApi} from '../../types';
 
 interface PhotosState {
@@ -9,6 +9,8 @@ interface PhotosState {
     modal: boolean;
     fullscreenPreview: Fullscreen | null;
     deletePhotoLoading: string | false;
+    userGallery: PhotoApi[];
+    fetchUserGalleryLoading: boolean;
 }
 
 const initialState: PhotosState = {
@@ -17,6 +19,8 @@ const initialState: PhotosState = {
     modal: false,
     fullscreenPreview: null,
     deletePhotoLoading: false,
+    userGallery: [],
+    fetchUserGalleryLoading: false,
 };
 
 export const photosSlice = createSlice({
@@ -52,6 +56,17 @@ export const photosSlice = createSlice({
         builder.addCase(deletePhoto.rejected, (state) => {
             state.deletePhotoLoading = false;
         });
+        builder.addCase(fetchPhotosByUserId.pending, (state) => {
+            state.userGallery = [];
+            state.fetchUserGalleryLoading = true;
+        });
+        builder.addCase(fetchPhotosByUserId.fulfilled, (state, {payload: photos}) => {
+            state.fetchUserGalleryLoading = false;
+            state.userGallery = photos;
+        });
+        builder.addCase(fetchPhotosByUserId.rejected, (state) => {
+            state.fetchUserGalleryLoading = false;
+        });
     },
 });
 
@@ -63,3 +78,5 @@ export const selectFetchingPhotosLoading = (state: RootState) => state.photos.fe
 export const selectModal = (state:RootState) => state.photos.modal;
 export const selectFullscreenPreview = (state: RootState) => state.photos.fullscreenPreview;
 export const selectDeletePhotoLoading = (state: RootState) => state.photos.deletePhotoLoading;
+export const selectUserGalley = (state: RootState) => state.photos.userGallery;
+export const selectFetchingUserGalleryLoading = (state: RootState) => state.photos.fetchUserGalleryLoading;
