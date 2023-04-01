@@ -29,7 +29,7 @@ const UserGallery = () => {
             </Typography>
             }
             {user && user._id === id && <AddPhotoButton/>}
-            <PhotoItems items={gallery} idParams={id}/>
+            <PhotoItems items={gallery} idParams={id} ownGallery={true}/>
         </>
     );
 };

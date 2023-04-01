@@ -6,6 +6,7 @@ import {fetchPhotosByUserId} from '../features/photos/photosThunk';
 import PhotoItems from '../features/photos/components/PhotoItems';
 import Spinner from '../components/UI/Spinner/Spinner';
 import {Typography} from '@mui/material';
+import AddPhotoButton from '../components/UI/Buttons/AddPhotoButton';
 
 const MyGallery = () => {
     const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ const MyGallery = () => {
             <Typography variant='h5' component='div' textTransform='capitalize'>
                 My Gallery
             </Typography>
+            <AddPhotoButton/>
             <PhotoItems items={gallery} idParams={user?._id} ownGallery={true}/>
         </>
     );
