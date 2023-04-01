@@ -48,13 +48,21 @@ const PhotoItem: React.FC<Props> = ({item, showName, idParams}) => {
                     image={apiURL + '/' + item.image}
                     alt={item.title}
                 />
-                <CardContent>
-                    <Typography variant='h5' fontWeight='bolder' color='blueviolet' component='div'
-                                textTransform='capitalize'>
-                        Title: {item.title}
-                    </Typography>
-                </CardContent>
             </CardActionArea>
+                <CardContent>
+                    <Grid container color='blueviolet'>
+                        <Grid item>
+                            <Typography variant='h6' component='div' sx={{mr:1}}>
+                                Title:
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="h6" component='div' sx={{textDecoration: 'underline'}} onClick={onOpenModal}>
+                                {item.title}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </CardContent>
             <Grid container alignItems='center' justifyContent='space-between'>
                 <Grid item>
                     {showName &&
