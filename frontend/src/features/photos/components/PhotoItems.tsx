@@ -1,6 +1,7 @@
 import React from 'react';
 import {Grid, Typography} from '@mui/material';
 import PhotoItem from './PhotoItem';
+import ModalCover from '../../../components/UI/ModalCover/ModalCover';
 import {PhotoApi} from '../../../types';
 
 interface Props {
@@ -18,11 +19,14 @@ const PhotoItems: React.FC<Props> = ({items}) => {
     }
 
     return (
-        <Grid container spacing={2}>
-            {items.map(photo => (
-                <PhotoItem key={photo._id} item={photo}/>
-            ))}
-        </Grid>
+        <>
+            <Grid container spacing={2}>
+                {items.map(photo => (
+                    <PhotoItem key={photo._id} item={photo}/>
+                ))}
+            </Grid>
+            <ModalCover/>
+        </>
     );
 };
 

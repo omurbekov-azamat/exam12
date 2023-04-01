@@ -2,6 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
 import {apiURL} from '../../../constants';
+import {openModal} from '../photosSlice';
+import {useAppDispatch} from '../../../app/hook';
 import {PhotoApi} from '../../../types';
 
 interface Props {
@@ -9,9 +11,15 @@ interface Props {
 }
 
 const PhotoItem: React.FC<Props> = ({item}) => {
+    const dispatch = useAppDispatch();
+
+    const onOpenModal = () => {
+        dispatch(openModal({image: item.image, title: item.title}));
+    };
+
     return (
         <Grid item>
-            <CardActionArea>
+            <CardActionArea onClick={onOpenModal}>
                 <CardMedia
                     component="img"
                     height="200"

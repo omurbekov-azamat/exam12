@@ -40,9 +40,12 @@ export interface ValidationError {
     _name: string;
 }
 
-export interface PhotoApi {
+export interface Fullscreen {
     image: string;
     title: string;
+}
+
+export interface PhotoApi extends Fullscreen{
     user: {
         _id: string;
         displayName: string;
