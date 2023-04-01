@@ -1,6 +1,32 @@
+import {isAxiosError} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import {PhotoApi} from '../../types';
+import {PhotoApi, PhotoMutation, ValidationError} from '../../types';
+
+export const createPhoto = createAsyncThunk<void, PhotoMutation, { rejectValue: ValidationError }>(
+    'photos/createPhoto',
+    async (photoData,{rejectWithValue}) => {
+        try {
+            const formData = new FormData();
+            const keys = Object.keys(photoData) as (keyof PhotoMutation)[];
+
+            keys.forEach(key => {
+                const value = photoData[key];
+
+                if (value !== null) {
+                    formData.append(key, value);
+                }
+            });
+
+            await axiosApi.post('/photos', formData);
+        } catch (e) {
+            if (isAxiosError(e) && e.response && e.response.status === 400) {
+                return rejectWithValue(e.response.data as ValidationError);
+            }
+            throw e;
+        }
+    }
+);
 
 export const fetchPhotos = createAsyncThunk<PhotoApi[]>(
     'photos/fetchAll',

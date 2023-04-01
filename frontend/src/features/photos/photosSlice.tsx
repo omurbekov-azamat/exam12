@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
-import {deletePhoto, fetchPhotos, fetchPhotosByUserId} from './photosThunk';
+import {createPhoto, deletePhoto, fetchPhotos, fetchPhotosByUserId} from './photosThunk';
 import {Fullscreen, PhotoApi, ValidationError} from '../../types';
 
 interface PhotosState {
@@ -41,6 +41,17 @@ export const photosSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
+        builder.addCase(createPhoto.pending, (state) => {
+            state.createPhotoError = null;
+            state.createPhotoLoading = true;
+        });
+        builder.addCase(createPhoto.fulfilled, (state) => {
+            state.createPhotoLoading = false;
+        });
+        builder.addCase(createPhoto.rejected, (state, {payload: error}) => {
+            state.createPhotoLoading = false;
+            state.createPhotoError = error || null;
+        });
         builder.addCase(fetchPhotos.pending, (state) => {
             state.fetchPhotosLoading = true;
         });
