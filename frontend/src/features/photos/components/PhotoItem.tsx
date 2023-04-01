@@ -13,9 +13,10 @@ interface Props {
     item: PhotoApi;
     showName?: boolean;
     idParams?: string;
+    ownGallery?: boolean;
 }
 
-const PhotoItem: React.FC<Props> = ({item, showName, idParams}) => {
+const PhotoItem: React.FC<Props> = ({item, showName, idParams, ownGallery}) => {
     const dispatch = useAppDispatch();
     const location = useLocation();
     const user = useAppSelector(selectUser);
@@ -49,20 +50,21 @@ const PhotoItem: React.FC<Props> = ({item, showName, idParams}) => {
                     alt={item.title}
                 />
             </CardActionArea>
-                <CardContent>
-                    <Grid container color='blueviolet'>
-                        <Grid item>
-                            <Typography variant='h6' component='div' sx={{mr:1}}>
-                                Title:
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="h6" component='div' sx={{textDecoration: 'underline'}} onClick={onOpenModal}>
-                                {item.title}
-                            </Typography>
-                        </Grid>
+            <CardContent>
+                <Grid container color='blueviolet'>
+                    <Grid item>
+                        <Typography variant='h6' component='div' sx={{mr: 1}}>
+                            Title:
+                        </Typography>
                     </Grid>
-                </CardContent>
+                    <Grid item>
+                        <Typography variant="h6" component='div' sx={{textDecoration: 'underline'}}
+                                    onClick={onOpenModal}>
+                            {item.title}
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </CardContent>
             <Grid container alignItems='center' justifyContent='space-between'>
                 <Grid item>
                     {showName &&
@@ -80,6 +82,16 @@ const PhotoItem: React.FC<Props> = ({item, showName, idParams}) => {
                 </Grid>
                 <Grid item>
                     {user && user.role === 'admin' &&
+                        <LoadingButton
+                            type='button'
+                            color='error'
+                            onClick={() => onDeletePhoto(item._id)}
+                            loading={deleteLoading ? deleteLoading === item._id : false}
+                        >
+                            delete
+                        </LoadingButton>
+                    }
+                    {ownGallery && user && user._id === item.user._id && user.role !== 'admin' &&
                         <LoadingButton
                             type='button'
                             color='error'

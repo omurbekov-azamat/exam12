@@ -8,9 +8,10 @@ interface Props {
     items: PhotoApi[];
     showName?: boolean;
     idParams?: string;
+    ownGallery?: boolean;
 }
 
-const PhotoItems: React.FC<Props> = ({items, showName, idParams}) => {
+const PhotoItems: React.FC<Props> = ({items, showName, idParams, ownGallery}) => {
 
     if (items.length === 0) {
         return (
@@ -24,7 +25,13 @@ const PhotoItems: React.FC<Props> = ({items, showName, idParams}) => {
         <>
             <Grid container spacing={2} mt={2}>
                 {items.map(photo => (
-                    <PhotoItem key={photo._id} item={photo} showName={showName} idParams={idParams}/>
+                    <PhotoItem
+                        key={photo._id}
+                        item={photo}
+                        showName={showName}
+                        idParams={idParams}
+                        ownGallery={ownGallery}
+                    />
                 ))}
             </Grid>
             <ModalCover/>

@@ -24,7 +24,7 @@ const MyGallery = () => {
             <Typography variant='h5' component='div' textTransform='capitalize'>
                 My Gallery
             </Typography>
-            <PhotoItems items={gallery} idParams={user?._id}/>
+            <PhotoItems items={gallery} idParams={user?._id} ownGallery={true}/>
         </>
     );
 };
