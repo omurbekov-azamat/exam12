@@ -22,6 +22,6 @@ const PhotoSchema = new Schema<IPhoto>({
     },
 });
 
-const Cocktail = model<IPhoto>('Cocktail', PhotoSchema);
+const Photo = model<IPhoto>('Photo', PhotoSchema);
 
-export default Cocktail;
+export default Photo;
