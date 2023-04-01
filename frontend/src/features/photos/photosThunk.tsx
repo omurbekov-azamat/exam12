@@ -13,3 +13,15 @@ export const fetchPhotos = createAsyncThunk<PhotoApi[]>(
         }
     }
 );
+
+export const deletePhoto = createAsyncThunk<void, string>(
+    'photos/deletePhoto',
+    async (id, {dispatch}) => {
+        try {
+            await axiosApi.delete('/photos/' + id);
+            await dispatch(fetchPhotos());
+        } catch (e) {
+            throw e;
+        }
+    }
+);

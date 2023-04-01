@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
-import {fetchPhotos} from './photosThunk';
+import {deletePhoto, fetchPhotos} from './photosThunk';
 import {Fullscreen, PhotoApi} from '../../types';
 
 interface PhotosState {
@@ -8,6 +8,7 @@ interface PhotosState {
     fetchPhotosLoading: boolean;
     modal: boolean;
     fullscreenPreview: Fullscreen | null;
+    deletePhotoLoading: string | false;
 }
 
 const initialState: PhotosState = {
@@ -15,6 +16,7 @@ const initialState: PhotosState = {
     fetchPhotosLoading: false,
     modal: false,
     fullscreenPreview: null,
+    deletePhotoLoading: false,
 };
 
 export const photosSlice = createSlice({
@@ -41,6 +43,15 @@ export const photosSlice = createSlice({
         builder.addCase(fetchPhotos.rejected, (state) => {
             state.fetchPhotosLoading = false;
         });
+        builder.addCase(deletePhoto.pending, (state, {meta}) => {
+            state.deletePhotoLoading = meta.arg;
+        });
+        builder.addCase(deletePhoto.fulfilled, (state) => {
+            state.deletePhotoLoading = false;
+        });
+        builder.addCase(deletePhoto.rejected, (state) => {
+            state.deletePhotoLoading = false;
+        });
     },
 });
 
@@ -51,3 +62,4 @@ export const selectPhotos = (state: RootState) => state.photos.photos;
 export const selectFetchingPhotosLoading = (state: RootState) => state.photos.fetchPhotosLoading;
 export const selectModal = (state:RootState) => state.photos.modal;
 export const selectFullscreenPreview = (state: RootState) => state.photos.fullscreenPreview;
+export const selectDeletePhotoLoading = (state: RootState) => state.photos.deletePhotoLoading;
