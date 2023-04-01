@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 import {deletePhoto, fetchPhotos, fetchPhotosByUserId} from './photosThunk';
-import {Fullscreen, PhotoApi} from '../../types';
+import {Fullscreen, PhotoApi, ValidationError} from '../../types';
 
 interface PhotosState {
     photos: PhotoApi[];
@@ -11,6 +11,8 @@ interface PhotosState {
     deletePhotoLoading: string | false;
     userGallery: PhotoApi[];
     fetchUserGalleryLoading: boolean;
+    createPhotoLoading: boolean;
+    createPhotoError: ValidationError | null;
 }
 
 const initialState: PhotosState = {
@@ -21,6 +23,8 @@ const initialState: PhotosState = {
     deletePhotoLoading: false,
     userGallery: [],
     fetchUserGalleryLoading: false,
+    createPhotoLoading: false,
+    createPhotoError: null,
 };
 
 export const photosSlice = createSlice({
@@ -80,3 +84,5 @@ export const selectFullscreenPreview = (state: RootState) => state.photos.fullsc
 export const selectDeletePhotoLoading = (state: RootState) => state.photos.deletePhotoLoading;
 export const selectUserGalley = (state: RootState) => state.photos.userGallery;
 export const selectFetchingUserGalleryLoading = (state: RootState) => state.photos.fetchUserGalleryLoading;
+export const selectCreatePhotoLoading = (state: RootState) => state.photos.createPhotoLoading;
+export const selectCreatePhotoError = (state: RootState) => state.photos.createPhotoError;

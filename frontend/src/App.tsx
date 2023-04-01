@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import {useAppSelector} from './app/hook';
 import {selectUser} from './features/users/usersSlice';
 import MyGallery from './containers/MyGallery';
+import PhotoForm from './features/photos/components/PhotoForm';
 
 function App() {
     const user = useAppSelector(selectUser);
@@ -23,6 +24,11 @@ function App() {
                 <Route path='/my-gallery' element={(
                     <ProtectedRoute isAllowed={user && Boolean(user)}>
                         <MyGallery/>
+                    </ProtectedRoute>
+                )}/>
+                <Route path='/addPhoto' element={(
+                    <ProtectedRoute isAllowed={user && Boolean(user)}>
+                        <PhotoForm/>
                     </ProtectedRoute>
                 )}/>
             </Route>

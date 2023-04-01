@@ -52,3 +52,8 @@ export interface PhotoApi extends Fullscreen{
     };
     _id: string;
 }
+
+export interface PhotoMutation {
+    title: string;
+    image: File | null;
+}

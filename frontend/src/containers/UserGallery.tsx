@@ -6,12 +6,15 @@ import {selectFetchingUserGalleryLoading, selectUserGalley} from '../features/ph
 import PhotoItems from '../features/photos/components/PhotoItems';
 import Spinner from '../components/UI/Spinner/Spinner';
 import {Typography} from '@mui/material';
+import {selectUser} from '../features/users/usersSlice';
+import AddPhotoButton from '../components/UI/Buttons/AddPhotoButton';
 
 const UserGallery = () => {
     const dispatch = useAppDispatch();
     const {id} = useParams() as {id: string};
     const loading = useAppSelector(selectFetchingUserGalleryLoading);
-    const gallery = useAppSelector(selectUserGalley);
+    const gallery = useAppSelector(selectUserGalley)!;
+    const user = useAppSelector(selectUser)!;
 
     useEffect(() => {
         dispatch(fetchPhotosByUserId(id));
@@ -25,6 +28,7 @@ const UserGallery = () => {
                 {gallery[0].user.displayName}'s gallery
             </Typography>
             }
+            {user && user._id === id && <AddPhotoButton/>}
             <PhotoItems items={gallery} idParams={id}/>
         </>
     );
