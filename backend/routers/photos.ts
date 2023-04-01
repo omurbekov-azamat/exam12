@@ -4,6 +4,7 @@ import auth, {RequestWithUser} from '../middleware/auth';
 import {imagesUpload} from '../multer';
 import mongoose from 'mongoose';
 import Photo from '../modules/Photo';
+import User from '../modules/User';
 
 const photosRouter = express.Router();
 
@@ -29,17 +30,46 @@ photosRouter.post('/', auth, imagesUpload.single('image'), async (req, res, next
 });
 
 photosRouter.get('/', async (req, res, next) => {
+    const token = req.get('Authorization');
     if (req.query.user) {
-        const photos = await Photo.find({user: req.query.user}).populate({path: 'user', select: 'displayName'});
+        try {
+            if (!token) {
+                const photos = await Photo.find({user: req.query.user}).populate({path: 'user', select: 'displayName'});
+                if (!photos) {
+                    return res.status(404).send({error: 'Photos are not found'});
+                }
+                return res.send(photos);
+            }
 
-        if (!photos) {
-            return res.status(404).send({error: 'Photos are not found'});
+            const user = await User.findOne({token});
+            if (!user) {
+                return res.status(401).send({error: 'Wrong token!'});
+            }
+
+            const photos = await Photo.find({user: req.query.user}).populate({path: 'user', select: 'displayName'});
+            if (!photos) {
+                return res.status(404).send({error: 'Photos are not found'});
+            }
+            return res.send(photos);
+        } catch (e) {
+            return next(e);
         }
-
-        return res.send(photos);
     }
 
     try {
+        if (!token) {
+            const photos = await Photo.find().populate({path: 'user', select: 'displayName'});
+            if (!photos) {
+                return res.status(404).send({error: 'Photos are not found'});
+            }
+            return res.send(photos);
+        }
+
+        const user = await User.findOne({token});
+        if (!user) {
+            return res.status(401).send({error: 'Wrong token!'});
+        }
+
         const photos = await Photo.find().populate({path: 'user', select: 'displayName'});
         if (!photos) {
             return res.status(404).send({error: 'Photos are not found'});

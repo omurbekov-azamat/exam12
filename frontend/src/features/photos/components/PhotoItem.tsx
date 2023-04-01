@@ -1,12 +1,12 @@
 import React from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import {CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
-import {apiURL} from '../../../constants';
-import {openModal, selectDeletePhotoLoading} from '../photosSlice';
-import {useAppDispatch, useAppSelector} from '../../../app/hook';
-import {selectUser} from '../../users/usersSlice';
-import {LoadingButton} from '@mui/lab';
 import {deletePhoto, fetchPhotos, fetchPhotosByUserId} from '../photosThunk';
+import {useAppDispatch, useAppSelector} from '../../../app/hook';
+import {openModal, selectDeletePhotoLoading} from '../photosSlice';
+import {selectUser} from '../../users/usersSlice';
+import {CardActionArea, CardContent, CardMedia, Grid, Typography} from '@mui/material';
+import {LoadingButton} from '@mui/lab';
+import {apiURL} from '../../../constants';
 import {PhotoApi} from '../../../types';
 
 interface Props {
@@ -53,13 +53,15 @@ const PhotoItem: React.FC<Props> = ({item, showName, idParams, ownGallery}) => {
             <CardContent>
                 <Grid container color='blueviolet'>
                     <Grid item>
-                        <Typography variant='h6' component='div' sx={{mr: 1}}>
-                            Title:
-                        </Typography>
+                        <Typography variant='h6' component='div' sx={{mr: 1}}>Title:</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="h6" component='div' sx={{textDecoration: 'underline'}}
-                                    onClick={onOpenModal}>
+                        <Typography
+                            variant="h6"
+                            component='div'
+                            sx={{textDecoration: 'underline'}}
+                            onClick={onOpenModal}
+                        >
                             {item.title}
                         </Typography>
                     </Grid>
@@ -70,9 +72,7 @@ const PhotoItem: React.FC<Props> = ({item, showName, idParams, ownGallery}) => {
                     {showName &&
                         <Grid container textTransform='capitalize'>
                             <Grid item>
-                                <Typography ml={2} mr={1}>
-                                    By:
-                                </Typography>
+                                <Typography ml={2} mr={1}>By:</Typography>
                             </Grid>
                             <Grid item>
                                 <Link to={'/userGallery/' + item.user._id}>{item.user.displayName}</Link>
@@ -81,7 +81,7 @@ const PhotoItem: React.FC<Props> = ({item, showName, idParams, ownGallery}) => {
                     }
                 </Grid>
                 <Grid item>
-                    {user && user.role === 'admin' &&
+                    {user && ((user.role === 'admin') || (ownGallery && user._id === item.user._id && user.role !== 'admin')) && (
                         <LoadingButton
                             type='button'
                             color='error'
@@ -90,17 +90,7 @@ const PhotoItem: React.FC<Props> = ({item, showName, idParams, ownGallery}) => {
                         >
                             delete
                         </LoadingButton>
-                    }
-                    {ownGallery && user && user._id === item.user._id && user.role !== 'admin' &&
-                        <LoadingButton
-                            type='button'
-                            color='error'
-                            onClick={() => onDeletePhoto(item._id)}
-                            loading={deleteLoading ? deleteLoading === item._id : false}
-                        >
-                            delete
-                        </LoadingButton>
-                    }
+                    )}
                 </Grid>
             </Grid>
         </Grid>
