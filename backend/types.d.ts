@@ -1,3 +1,5 @@
+import {ObjectId} from 'mongoose';
+
 export interface IUser {
     email: string
     password: string;
@@ -6,4 +8,10 @@ export interface IUser {
     role: string;
     token: string;
     googleId?: string;
+}
+
+export interface IPhoto {
+    user: ObjectId;
+    title: string;
+    image: string;
 }
