@@ -22,7 +22,7 @@ const AppToolbar = () => {
             <Toolbar>
                 <Grid container justifyContent="space-between" alignItems="center">
                     <Typography variant="h6" component="div">
-                        <Link to="/">Cocktails</Link>
+                        <Link to="/photos">Photos</Link>
                     </Typography>
                     <Grid item>
                         {user ? (

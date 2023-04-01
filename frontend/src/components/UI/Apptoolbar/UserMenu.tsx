@@ -27,7 +27,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
 
     const handleLogout = async () => {
         await dispatch(logout());
-        await navigate('/');
+        await navigate('/photos');
     };
 
     return (

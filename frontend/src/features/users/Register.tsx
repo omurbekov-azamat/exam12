@@ -39,7 +39,7 @@ const Register = () => {
     const submitFormHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         await dispatch(register(state)).unwrap();
-        await navigate('/');
+        await navigate('/photos');
     };
 
     const getFieldError = (fieldName: string) => {

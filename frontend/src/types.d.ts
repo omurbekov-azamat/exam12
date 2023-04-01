@@ -39,3 +39,13 @@ export interface ValidationError {
     name: string;
     _name: string;
 }
+
+export interface PhotoApi {
+    image: string;
+    title: string;
+    user: {
+        _id: string;
+        displayName: string;
+    };
+    _id: string;
+}

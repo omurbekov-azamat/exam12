@@ -12,7 +12,7 @@ const LoginWithGoogle = () => {
 
     const googleRegisterHandler = async (credentials: string) => {
         await dispatch(googleLogin(credentials)).unwrap();
-        await navigate('/')
+        await navigate('/photos')
     };
 
     return (
